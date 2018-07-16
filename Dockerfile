@@ -14,13 +14,15 @@ DEBIAN_FRONTEND=noninteractive apt install -y \
 wget \
 python-pip \
 python-rosinstall \
+python-catkin-tools \
 ros-${ROS_DISTRO}-ros-base \
 ros-${ROS_DISTRO}-jsk-tools \
 ros-${ROS_DISTRO}-rgbd-launch \
 ros-${ROS_DISTRO}-image-transport-plugins \
 ros-${ROS_DISTRO}-image-transport && \
 rm -rf /var/lib/apt/lists/*
-RUN rosdep init
+RUN rosdep init \
+    &&  rosdep update
 
 # Setup ROS environment variables globally
 RUN echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /etc/bash.bashrc
@@ -29,14 +31,18 @@ ENV LIBREALSENSE_VERSION 2.10.2
 RUN wget https://github.com/IntelRealSense/librealsense/archive/v${LIBREALSENSE_VERSION}.tar.gz
 RUN tar xvzf v${LIBREALSENSE_VERSION}.tar.gz
 RUN mkdir -p librealsense-${LIBREALSENSE_VERSION}/build
-RUN apt update && apt install -y libusb-1.0-0 libusb-1.0-0-dev
-RUN apt install -y freeglut3-dev libgtk-3-dev libglfw3-dev
+RUN apt update && \
+    apt install -y \
+        libusb-1.0-0 \
+        libusb-1.0-0-dev \
+        freeglut3-dev \
+        libgtk-3-dev \
+        libglfw3-dev && \
+        rm -rf /var/lib/apt/lists/*
 RUN cd librealsense-${LIBREALSENSE_VERSION}/build; cmake ..
 RUN cd librealsense-${LIBREALSENSE_VERSION}/build; make -j; make install
 
 ENV LIBREALSENSE_ROS_VERSION 2.0.3
-RUN rosdep update
-RUN pip install catkin-tools
 RUN mkdir -p catkin_ws/src
 RUN wget https://github.com/intel-ros/realsense/archive/${LIBREALSENSE_ROS_VERSION}.tar.gz
 RUN tar xvzf ${LIBREALSENSE_ROS_VERSION}.tar.gz
