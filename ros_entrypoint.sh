@@ -8,3 +8,4 @@ else
     source $SETUP
 fi
 
+exec "$@"
