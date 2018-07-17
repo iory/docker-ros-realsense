@@ -28,7 +28,7 @@ RUN apt update && \
         libglfw3-dev && \
         rm -rf /var/lib/apt/lists/*
 RUN cd librealsense-${LIBREALSENSE_VERSION}/build; cmake ..
-RUN cd librealsense-${LIBREALSENSE_VERSION}/build; make -j; make install
+RUN cd librealsense-${LIBREALSENSE_VERSION}/build; make -j4; make install
 
 ENV LIBREALSENSE_ROS_VERSION 2.0.3
 RUN mkdir -p catkin_ws/src
