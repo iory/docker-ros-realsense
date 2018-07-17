@@ -1,31 +1,19 @@
-FROM ubuntu:16.04
+FROM ros:kinetic
 
 MAINTAINER iory ab.ioryz@gmail.com
 
-RUN apt update
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-
 ENV ROS_DISTRO kinetic
 
-# Install ROS base and rosinstall
 RUN apt update && \
 DEBIAN_FRONTEND=noninteractive apt install -y \
 wget \
-python-pip \
 python-rosinstall \
 python-catkin-tools \
-ros-${ROS_DISTRO}-ros-base \
 ros-${ROS_DISTRO}-jsk-tools \
 ros-${ROS_DISTRO}-rgbd-launch \
 ros-${ROS_DISTRO}-image-transport-plugins \
 ros-${ROS_DISTRO}-image-transport && \
 rm -rf /var/lib/apt/lists/*
-RUN rosdep init \
-    &&  rosdep update
-
-# Setup ROS environment variables globally
-RUN echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /etc/bash.bashrc
 
 ENV LIBREALSENSE_VERSION 2.10.2
 RUN wget https://github.com/IntelRealSense/librealsense/archive/v${LIBREALSENSE_VERSION}.tar.gz
