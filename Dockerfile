@@ -1,6 +1,6 @@
 FROM ros:kinetic
 
-MAINTAINER iory ab.ioryz@gmail.com
+LABEL maintainer="iory ab.ioryz@gmail.com"
 
 ENV ROS_DISTRO kinetic
 
