@@ -21,7 +21,7 @@ RUN apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || sudo a
 RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main" -u
 
 RUN mkdir -p /catkin_ws/src && cd /catkin_ws/src && \
-  git clone https://github.com/IntelRealSense/librealsense
+  git clone https://github.com/intel-ros/realsense
 RUN cd catkin_ws; rosdep install -r -y --from-paths src --ignore-src
 RUN DEBIAN_FRONTEND=noninteractive apt install -y \
   libusb-1.0-0 \
