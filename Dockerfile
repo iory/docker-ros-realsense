@@ -23,6 +23,12 @@ RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/a
 RUN mkdir -p /catkin_ws/src && cd /catkin_ws/src && \
   git clone https://github.com/IntelRealSense/librealsense
 RUN cd catkin_ws; rosdep install -r -y --from-paths src --ignore-src
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+  libusb-1.0-0 \
+  libusb-1.0-0-dev \
+  freeglut3-dev \
+  libgtk-3-dev \
+  libglfw3-dev
 RUN mv /bin/sh /bin/sh_tmp && ln -s /bin/bash /bin/sh
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash; cd catkin_ws; catkin build
 RUN rm /bin/sh && mv /bin/sh_tmp /bin/sh
