@@ -5,14 +5,13 @@ LABEL maintainer="iory ab.ioryz@gmail.com"
 ENV ROS_DISTRO kinetic
 
 RUN apt -q -qq update && \
-  DEBIAN_FRONTEND=noninteractive apt install -y \
-  software-properties-common \
-  wget
+    DEBIAN_FRONTEND=noninteractive apt install -y \
+    software-properties-common \
+    wget \
+    apt-transport-https
 
-
-RUN echo 'deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main' || tee /etc/apt/sources.list.d/realsense-public.list
-RUN apt-key adv --keyserver keys.gnupg.net --recv-key C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keys.gnupg.net:80 --recv-key C8B3A55A6F3EFCDE
-RUN add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo xenial main"
+RUN apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+RUN add-apt-repository -y "deb https://librealsense.intel.com/Debian/apt-repo xenial main"
 RUN apt-get update -qq
 RUN apt-get install librealsense2-dkms --allow-unauthenticated -y
 RUN apt-get install librealsense2-dev --allow-unauthenticated -y
