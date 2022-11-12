@@ -1,4 +1,4 @@
-FROM ros:kinetic
+FROM ros:kinetic AS realsense_base
 
 LABEL maintainer="iory ab.ioryz@gmail.com"
 
@@ -45,3 +45,6 @@ COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 
 CMD ["bash"]
+
+FROM realsense_base AS realsense_rviz
+RUN apt-get update && apt-get install -y ros-$ROS_DISTRO-rviz*
