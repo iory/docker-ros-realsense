@@ -28,7 +28,7 @@ RUN apt -q -qq update && \
 RUN rosdep update
 
 RUN mkdir -p /catkin_ws/src && cd /catkin_ws/src && \
-  git clone --branch ros1-legacy --depth 1 https://github.com/IntelRealSense/realsense-ros.git && \
+  git clone --depth 1 https://github.com/IntelRealSense/realsense-ros.git && \
   git clone --depth 1 https://github.com/pal-robotics/ddynamic_reconfigure
 RUN cd catkin_ws;
 RUN mv /bin/sh /bin/sh_tmp && ln -s /bin/bash /bin/sh
