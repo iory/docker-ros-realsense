@@ -10,8 +10,8 @@ RUN apt -q -qq update && \
     wget \
     apt-transport-https
 
-RUN apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
-RUN add-apt-repository -y "deb https://librealsense.intel.com/Debian/apt-repo xenial main"
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+RUN add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" -u
 RUN apt-get update -qq
 RUN apt-get install librealsense2-dkms --allow-unauthenticated -y
 RUN apt-get install librealsense2-dev --allow-unauthenticated -y
@@ -28,8 +28,11 @@ RUN apt -q -qq update && \
 RUN rosdep update
 
 RUN mkdir -p /catkin_ws/src && cd /catkin_ws/src && \
-  git clone --depth 1 https://github.com/IntelRealSense/realsense-ros.git && \
-  git clone --depth 1 https://github.com/pal-robotics/ddynamic_reconfigure
+  git clone https://github.com/IntelRealSense/realsense-ros.git && \
+  cd realsense-ros && \
+  git checkout ros1-legacy && \
+  cd .. && \
+  git clone https://github.com/pal-robotics/ddynamic_reconfigure
 RUN cd catkin_ws;
 RUN mv /bin/sh /bin/sh_tmp && ln -s /bin/bash /bin/sh
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash; cd catkin_ws; catkin build -DCATKIN_ENABLE_TESTING=False -DCMAKE_BUILD_TYPE=Release
